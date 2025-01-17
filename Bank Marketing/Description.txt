@@ -1,0 +1,5 @@
+# Desciption of Bank Marketing Project
+
+This project is a classification problem which decides whether a customer subscribes to a term deposit depending on a variety of features such as customer's details, account type, amount in bank, recent transaction details etc. specified in the dataset.
+We used various models such as XGBClassifier, Random Forest and Simple Logistic Regression to compare their classification metrics.
+The results are potrayed in the form of heatmaps for better representation.
