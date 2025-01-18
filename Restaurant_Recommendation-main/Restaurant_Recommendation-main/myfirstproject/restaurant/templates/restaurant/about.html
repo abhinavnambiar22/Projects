@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - CulinaryGuide</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg,#007bff, #8a2be2);
+            color: #fff;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        main {
+            padding: 0 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            overflow: hidden;
+            background-color: linear-gradient(135deg, #8a2be2, #007bff);
+            border-bottom: 2px solid #fff; /* Add a border to the bottom of the navbar */
+        }
+        .login-container {
+            display: flex;
+            align-items: center; /* Center items vertically */
+        }
+
+        .login-container li {
+            margin-left: 10px; /* Add spacing between login and logout links */
+        }
+
+        .login-container li:first-child {
+            margin-left: auto; /* Push login link to the right */
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: #fff;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        .navbar a.active {
+            background-color: rgba(255, 255, 255, 0.5);
+            color: #ff5733;
+        }
+
+        /* Specific styles for the about section */
+        .about-section {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .about-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .about-section span {
+            color: #ff5733;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'home' %}" class="active">Home</a>
+        <a href="{% url 'about' %}">About</a>
+        <a href="{% url 'restaurant' %}">Restaurants</a>
+        <a href="{% url 'recommendations' %}">Recommendations</a>
+        <div class="login-container">
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="#">Welcome, {{ user.username }}</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Sign Up</a></li>
+            {% endif %}
+        </div>
+    </div>
+
+    <header>
+        <h1>About Us</h1>
+    </header>
+    <main>
+        <section class="about-section">
+            <h2>Welcome to <span>CulinaryGuide</span></h2>
+            <p>At CulinaryGuide, we're passionate about connecting food lovers with exceptional dining experiences. Whether you're a discerning gourmet, a casual diner, or an adventurous foodie, we've got you covered. Our mission is simple: to help you find the perfect restaurant for every occasion, craving, and budget.</p>
+            <p>Discover a world of flavors with our curated selection of restaurants, ranging from cozy neighborhood eateries to upscale fine dining establishments. Our team of food enthusiasts scours the culinary landscape to bring you the best of the best, ensuring that every recommendation is a delectable delight waiting to be savored.</p>
+            <p>With user-friendly search filters, personalized recommendations, and honest reviews from fellow foodies, CulinaryGuide makes it easy for you to explore, decide, and indulge in unforgettable dining experiences. Whether you're craving authentic Italian pasta, mouthwatering sushi, or innovative fusion cuisine, let us guide you to your next culinary adventure.</p>
+            <p>Join our community of food lovers today and embark on a journey of gastronomic discovery with CulinaryGuide. Because life is too short for mediocre meals!</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 CulinaryGuide. All rights reserved.</p>
+    </footer>
+</body>
+</html>

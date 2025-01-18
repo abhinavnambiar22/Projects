@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Recommendation System</title>
+    <style>
+        /* Your existing CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #1e6a9b, #4fc3f7);
+
+
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ff5733;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #ff2600;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            overflow: hidden;
+            background-color: linear-gradient(135deg, #8a2be2, #007bff);
+            border-bottom: 2px solid #1b1919;
+        }
+        .login-container {
+            display: flex;
+            align-items: center; /* Center items vertically */
+        }
+
+        .login-container li {
+            margin-left: 10px; /* Add spacing between login and logout links */
+        }
+
+        .login-container li:first-child {
+            margin-left: auto; /* Push login link to the right */
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .navbar a.active {
+            background-color: #ff5733;
+            color: white;
+        }
+
+        /* Responsive navigation bar */
+        @media screen and (max-width: 600px) {
+            .navbar a {
+                float: none;
+                display: block;
+                text-align: left;
+            }
+        }
+        
+        /* Styling for the gallery */
+        .gallery {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px; /* Add some space between the gallery and the button */
+            position: relative;
+        }
+
+        .gallery img {
+            width: 80%;
+            height: 450px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.5);
+            color: #333;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a class="active" href="{% url 'home' %}">Home</a>
+    <a href="{% url 'about' %}">About</a>
+    <a href="{% url 'restaurant' %}">Restaurants</a>
+    <a href="{% url 'recommendations' %}">Recommendations</a>
+    <!-- <a href="login/" style="float:right">Login</a> -->
+    <div class="login-container">
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="#">Welcome, {{ user.username }}</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Sign Up</a></li>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container">
+    <h1>Welcome to CulinaryGuide</h1>
+    <h4>Discover the best restaurants near you!</h4>
+    <!-- Gallery of photos -->
+    <div class="gallery">
+        <button class="prev" onclick="plusSlides(-1)">&#10094;</button>
+        <img class="slide" src="{% static 'restaurants/image3.jpg' %}" alt="Photo 1">
+        <img class="slide" src="{% static 'restaurants/image1.jpg' %}" alt="Photo 2">
+        <img class="slide" src="{% static 'restaurants/image2.jpg' %}" alt="Photo 3">
+        <!-- Add more images as needed -->
+        <button class="next" onclick="plusSlides(1)">&#10095;</button>
+    </div>
+    <a href="restaurant/" class="button">Find Restaurants</a>
+</div>
+
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("slide");
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slides[slideIndex-1].style.display = "block";
+    }
+</script>
+
+</body>
+</html>
