@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gesture Music Player</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+    input[type="file"], input[type="text"] {
+      margin: 10px;
+    }
+    #music-player {
+      background: linear-gradient(135deg, #1db954, #191414);
+      padding: 20px;
+      border-radius: 16px;
+      color: white;
+      max-width: 500px;
+      margin: 40px auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    #song-list li {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: background-color 0.3s ease;
+    }
+    #song-list li.playing {
+      background-color: rgba(255, 255, 255, 0.3);
+      font-weight: bold;
+    }
+    audio {
+      width: 100%;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎵 Gesture Music Player 🎵</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload Song</button>
+  </form>
+  <div id="music-player">
+    <h2>Playlist</h2>
+    <ul id="song-list">
+      {% for song in songs %}
+      <li data-src="{{ song.file.url }}">
+        <span>{{ song.title }}</span>
+        <button onclick="playSong(this)">Play</button>
+      </li>
+      {% endfor %}
+    </ul>
+    <audio id="main-audio" controls autoplay></audio>
+  </div>
+  <script>
+    const audio = document.getElementById('main-audio');
+
+    function playSong(btn) {
+        const li = btn.closest('li');
+        const songSrc = li.getAttribute('data-src');
+        if (audio.src !== window.location.origin + songSrc) {
+            audio.src = songSrc;
+            audio.play();
+        } else {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+    }
+
+    audio.addEventListener('play', () => {
+        document.querySelectorAll('#song-list li').forEach(li => li.classList.remove('playing'));
+        const currentLi = Array.from(document.querySelectorAll('#song-list li'))
+            .find(li => window.location.origin + li.getAttribute('data-src') === audio.src);
+        if (currentLi) currentLi.classList.add('playing');
+    });
+
+    // Create the global WebSocket and attach event handlers.
+    const socket = new WebSocket("ws://" + window.location.host + "/ws/gesture/");
+
+    socket.onopen = function() {
+        console.log("✅ [Frontend] WebSocket is open");
+    };
+
+    socket.onmessage = function(event) {
+        console.log("📨 [Frontend] Raw message received:", event.data);
+        const data = JSON.parse(event.data);
+        const action = data.action;   // Use the key 'action'
+        console.log("👂 [Frontend] Received gesture action:", action);
+        if (action === "play") {
+            audio.play();
+        } else if (action === "pause") {
+            audio.pause();
+        } else if (action === "next") {
+            const currentLi = document.querySelector('#song-list li.playing');
+            const nextLi = currentLi?.nextElementSibling || document.querySelector('#song-list li');
+            nextLi?.querySelector('button')?.click();
+        } else if (action === "previous") {
+            const currentLi = document.querySelector('#song-list li.playing');
+            const prevLi = currentLi?.previousElementSibling || document.querySelector('#song-list li:last-child');
+            prevLi?.querySelector('button')?.click();
+        } else if (action === "volume_up") {
+            audio.volume = Math.min(audio.volume + 0.1, 1);
+        } else if (action === "volume_down") {
+            audio.volume = Math.max(audio.volume - 0.1, 0);
+        }
+    };
+
+    socket.onerror = function(error) {
+        console.error("❗ [Frontend] WebSocket error:", error);
+    };
+
+    socket.onclose = function(event) {
+        console.log("❌ [Frontend] WebSocket closed:", event);
+    };
+  </script>
+</body>
+</html>
