@@ -5,6 +5,7 @@ This project uses machine learning to classify network traffic as either benign 
 ### **Dataset**
 
 The model is trained on the "IDS Intrusion CSV" dataset, specifically the `02-15-2018.csv` file, which contains network flow features and corresponding labels.
+Dataset Link: https://www.kaggle.com/datasets/solarmainframe/ids-intrusion-csv?select=02-15-2018.csv
 
 ### **Models Implemented**
 
