@@ -1,4 +1,4 @@
-# FinModNet: A News-Aware Modulated LSTM Framework for Stock Forecasting
+# FinModNet: A News-Aware Modulated LSTM Framework for Stock Forecasting.
 
 
 This project implements **FinModNet**, a novel framework designed to improve stock price prediction by integrating both historical financial data and qualitative news sentiment.
